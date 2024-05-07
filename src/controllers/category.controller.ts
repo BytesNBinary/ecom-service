@@ -28,10 +28,11 @@ export class CategoryController {
     @repository(CategoryRepository)
     public categoryRepository : CategoryRepository,
   ) {}
-  @authorize({
-    permissions: [PermissionKeys.DeleteCart],
-  })
+
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.CreateCategory],
+  })
   @post('/categories')
   @response(200, {
     description: 'Category model instance',
@@ -52,7 +53,12 @@ export class CategoryController {
   ): Promise<Category> {
     return this.categoryRepository.create(category);
   }
+
+
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewCategory],
+  })
   @get('/categories/count')
   @response(200, {
     description: 'Category model count',
@@ -63,7 +69,11 @@ export class CategoryController {
   ): Promise<Count> {
     return this.categoryRepository.count(where);
   }
+
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewCategory],
+  })
   @get('/categories')
   @response(200, {
     description: 'Array of Category model instances',
@@ -81,7 +91,11 @@ export class CategoryController {
   ): Promise<Category[]> {
     return this.categoryRepository.find(filter);
   }
+
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateCategory],
+  })
   @patch('/categories')
   @response(200, {
     description: 'Category PATCH success count',
@@ -100,7 +114,11 @@ export class CategoryController {
   ): Promise<Count> {
     return this.categoryRepository.updateAll(category, where);
   }
+
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewCategory],
+  })
   @get('/categories/{id}')
   @response(200, {
     description: 'Category model instance',
@@ -117,6 +135,9 @@ export class CategoryController {
     return this.categoryRepository.findById(id, filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateCategory],
+  })
   @patch('/categories/{id}')
   @response(204, {
     description: 'Category PATCH success',
@@ -135,6 +156,9 @@ export class CategoryController {
     await this.categoryRepository.updateById(id, category);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateCategory],
+  })
   @put('/categories/{id}')
   @response(204, {
     description: 'Category PUT success',
@@ -146,6 +170,9 @@ export class CategoryController {
     await this.categoryRepository.replaceById(id, category);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.DeleteCategory],
+  })
   @del('/categories/{id}')
   @response(204, {
     description: 'Category DELETE success',
@@ -154,3 +181,5 @@ export class CategoryController {
     await this.categoryRepository.deleteById(id);
   }
 }
+
+

@@ -20,6 +20,8 @@ import {
 import {ProductOption} from '../models';
 import {ProductOptionRepository} from '../repositories';
 import { authenticate, STRATEGY } from 'loopback4-authentication';
+import {authorize} from 'loopback4-authorization';
+import {PermissionKeys} from '../enum';
 
 export class ProductOptionController {
   constructor(
@@ -27,6 +29,9 @@ export class ProductOptionController {
     public productOptionRepository : ProductOptionRepository,
   ) {}
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.CreateProduct],
+  })
   @post('/product-options')
   @response(200, {
     description: 'ProductOption model instance',
@@ -48,6 +53,9 @@ export class ProductOptionController {
     return this.productOptionRepository.create(productOption);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewProduct],
+  })
   @get('/product-options/count')
   @response(200, {
     description: 'ProductOption model count',
@@ -59,6 +67,9 @@ export class ProductOptionController {
     return this.productOptionRepository.count(where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewProduct],
+  })
   @get('/product-options')
   @response(200, {
     description: 'Array of ProductOption model instances',
@@ -77,6 +88,9 @@ export class ProductOptionController {
     return this.productOptionRepository.find(filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @patch('/product-options')
   @response(200, {
     description: 'ProductOption PATCH success count',
@@ -96,6 +110,9 @@ export class ProductOptionController {
     return this.productOptionRepository.updateAll(productOption, where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewProduct],
+  })
   @get('/product-options/{id}')
   @response(200, {
     description: 'ProductOption model instance',
@@ -112,6 +129,9 @@ export class ProductOptionController {
     return this.productOptionRepository.findById(id, filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @patch('/product-options/{id}')
   @response(204, {
     description: 'ProductOption PATCH success',
@@ -130,6 +150,9 @@ export class ProductOptionController {
     await this.productOptionRepository.updateById(id, productOption);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @put('/product-options/{id}')
   @response(204, {
     description: 'ProductOption PUT success',
@@ -141,6 +164,9 @@ export class ProductOptionController {
     await this.productOptionRepository.replaceById(id, productOption);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.DeleteProduct],
+  })
   @del('/product-options/{id}')
   @response(204, {
     description: 'ProductOption DELETE success',

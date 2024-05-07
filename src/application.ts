@@ -38,7 +38,7 @@ export class EcomServiceApplication extends BootMixin(
     this.component(RestExplorerComponent);
     this.component(AuthenticationComponent);
     this.bind(AuthorizationBindings.CONFIG).to({
-      allowAlwaysPaths: ['/explorer'],
+      allowAlwaysPaths: ['/explorer', '/ping'],
     });
     this.component(AuthorizationComponent);
 

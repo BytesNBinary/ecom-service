@@ -1,15 +1,10 @@
-import {Model, model, property} from '@loopback/repository';
+import {Entity, model} from '@loopback/repository';
+import {Permissions} from 'loopback4-authorization';
 
 @model()
-export class Role extends Model {
-
+export class Role extends Entity implements Permissions<string> {
   constructor(data?: Partial<Role>) {
     super(data);
   }
+  permissions: string[];
 }
-
-export interface RoleRelations {
-  // describe navigational properties here
-}
-
-export type RoleWithRelations = Role & RoleRelations;

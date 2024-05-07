@@ -1,6 +1,7 @@
 import {inject} from '@loopback/core';
 import {
   FindRoute,
+  HttpErrors,
   InvokeMethod,
   ParseParams,
   Reject,
@@ -12,6 +13,7 @@ import {
 import {AuthenticateFn, AuthenticationBindings} from 'loopback4-authentication';
 import {
   AuthorizationBindings,
+  AuthorizeErrorKeys,
   AuthorizeFn,
   UserPermissionsFn,
 } from 'loopback4-authorization';
@@ -30,6 +32,8 @@ export class MySequence implements SequenceHandler {
     protected checkAuthorisation: AuthorizeFn,
     @inject(AuthorizationBindings.USER_PERMISSIONS)
     private readonly getUserPermissions: UserPermissionsFn<string>,
+    @inject(AuthorizationBindings.PATHS_TO_ALLOW_ALWAYS)
+    protected allowedPaths: string[],
   ) {}
 
   async handle(context: RequestContext) {
@@ -37,24 +41,32 @@ export class MySequence implements SequenceHandler {
       const {request, response} = context;
 
       const route = this.findRoute(request);
+
+      const skipAuth = this.allowedPaths.find(
+        path => route.path.indexOf(path) === 0,
+      );
+
       const args = await this.parseParams(request, route);
       request.body = args[args.length - 1];
-      const authUser: User = await this.authenticateRequest(request);
+      if (!skipAuth) {
+        const authUser: User = await this.authenticateRequest(request);
+        if (!authUser?.permissions?.length) {
+          throw new HttpErrors.Forbidden(AuthorizeErrorKeys.NotAllowedAccess);
+        }
+        const permissions = this.getUserPermissions(
+          authUser.permissions,
+          authUser.role.permissions,
+        );
 
-      // Do ths if you are using method #3
-      const permissions = this.getUserPermissions(
-        authUser.permissions,
-        authUser.role.permissions,
-      );
-      // This is the important line added for authorization. Needed for all 3 methods
-      const isAccessAllowed: boolean = await this.checkAuthorisation(
-        permissions, // do authUser.permissions if using method #1
-        request,
-      );
-      // Checking access to route here
-      if (!isAccessAllowed) {
-        throw new HttpErrors.Forbidden(AuthorizeErrorKeys.NotAllowedAccess);
+        const isAccessAllowed: boolean = await this.checkAuthorisation(
+          permissions,
+          request,
+        );
+        if (!isAccessAllowed) {
+          throw new HttpErrors.Forbidden(AuthorizeErrorKeys.NotAllowedAccess);
+        }
       }
+
       const result = await this.invoke(route, args);
       this.send(response, result);
     } catch (err) {

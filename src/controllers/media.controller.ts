@@ -20,6 +20,8 @@ import {
 import {Media} from '../models';
 import {MediaRepository} from '../repositories';
 import { authenticate, STRATEGY } from 'loopback4-authentication';
+import {authorize} from 'loopback4-authorization';
+import {PermissionKeys} from '../enum';
 
 export class MediaController {
   constructor(
@@ -27,6 +29,9 @@ export class MediaController {
     public mediaRepositoryRepository : MediaRepository,
   ) {}
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.CreateProduct],
+  })
   @post('/media')
   @response(200, {
     description: 'Media model instance',
@@ -48,6 +53,9 @@ export class MediaController {
     return this.mediaRepositoryRepository.create(media);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewProduct],
+  })
   @get('/media/count')
   @response(200, {
     description: 'Media model count',
@@ -59,6 +67,9 @@ export class MediaController {
     return this.mediaRepositoryRepository.count(where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewProduct],
+  })
   @get('/media')
   @response(200, {
     description: 'Array of Media model instances',
@@ -77,6 +88,9 @@ export class MediaController {
     return this.mediaRepositoryRepository.find(filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @patch('/media')
   @response(200, {
     description: 'Media PATCH success count',
@@ -96,6 +110,9 @@ export class MediaController {
     return this.mediaRepositoryRepository.updateAll(media, where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewProduct],
+  })
   @get('/media/{id}')
   @response(200, {
     description: 'Media model instance',
@@ -112,6 +129,9 @@ export class MediaController {
     return this.mediaRepositoryRepository.findById(id, filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @patch('/media/{id}')
   @response(204, {
     description: 'Media PATCH success',
@@ -130,6 +150,9 @@ export class MediaController {
     await this.mediaRepositoryRepository.updateById(id, media);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @put('/media/{id}')
   @response(204, {
     description: 'Media PUT success',
@@ -141,6 +164,9 @@ export class MediaController {
     await this.mediaRepositoryRepository.replaceById(id, media);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.DeleteProduct],
+  })
   @del('/media/{id}')
   @response(204, {
     description: 'Media DELETE success',

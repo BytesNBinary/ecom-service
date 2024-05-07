@@ -20,6 +20,8 @@ import {
 import {OptionType} from '../models';
 import {OptionTypeRepository} from '../repositories';
 import { authenticate, STRATEGY } from 'loopback4-authentication';
+import {authorize} from 'loopback4-authorization';
+import {PermissionKeys} from '../enum';
 
 export class OptionTypeController {
   constructor(
@@ -27,6 +29,9 @@ export class OptionTypeController {
     public optionTypeRepository : OptionTypeRepository,
   ) {}
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.CreateProduct],
+  })
   @post('/option-types')
   @response(200, {
     description: 'OptionType model instance',
@@ -48,6 +53,9 @@ export class OptionTypeController {
     return this.optionTypeRepository.create(optionType);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewProduct],
+  })
   @get('/option-types/count')
   @response(200, {
     description: 'OptionType model count',
@@ -59,6 +67,9 @@ export class OptionTypeController {
     return this.optionTypeRepository.count(where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewProduct],
+  })
   @get('/option-types')
   @response(200, {
     description: 'Array of OptionType model instances',
@@ -77,6 +88,9 @@ export class OptionTypeController {
     return this.optionTypeRepository.find(filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @patch('/option-types')
   @response(200, {
     description: 'OptionType PATCH success count',
@@ -96,6 +110,9 @@ export class OptionTypeController {
     return this.optionTypeRepository.updateAll(optionType, where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewProduct],
+  })
   @get('/option-types/{id}')
   @response(200, {
     description: 'OptionType model instance',
@@ -112,6 +129,9 @@ export class OptionTypeController {
     return this.optionTypeRepository.findById(id, filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @patch('/option-types/{id}')
   @response(204, {
     description: 'OptionType PATCH success',
@@ -130,6 +150,9 @@ export class OptionTypeController {
     await this.optionTypeRepository.updateById(id, optionType);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @put('/option-types/{id}')
   @response(204, {
     description: 'OptionType PUT success',
@@ -141,6 +164,9 @@ export class OptionTypeController {
     await this.optionTypeRepository.replaceById(id, optionType);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.DeleteProduct],
+  })
   @del('/option-types/{id}')
   @response(204, {
     description: 'OptionType DELETE success',

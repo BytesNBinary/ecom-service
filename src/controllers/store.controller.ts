@@ -20,12 +20,17 @@ import {
 import {Store} from '../models';
 import { StoreRepository } from '../repositories/store.repository';
 import {authenticate, STRATEGY} from 'loopback4-authentication';
+import {authorize} from 'loopback4-authorization';
+import {PermissionKeys} from '../enum';
 export class StoreController {
   constructor(
     @repository(StoreRepository)
     public storeRepository : StoreRepository,
   ) {}
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.CreateSeller],
+  })
   @post('/stores')
   @response(200, {
     description: 'Store model instance',
@@ -47,6 +52,9 @@ export class StoreController {
     return this.storeRepository.create(store);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewSeller],
+  })
   @get('/stores/count')
   @response(200, {
     description: 'Store model count',
@@ -58,6 +66,9 @@ export class StoreController {
     return this.storeRepository.count(where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewSeller],
+  })
   @get('/stores')
   @response(200, {
     description: 'Array of Store model instances',
@@ -76,6 +87,9 @@ export class StoreController {
     return this.storeRepository.find(filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateSeller],
+  })
   @patch('/stores')
   @response(200, {
     description: 'Store PATCH success count',
@@ -95,6 +109,9 @@ export class StoreController {
     return this.storeRepository.updateAll(store, where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewSeller],
+  })
   @get('/stores/{id}')
   @response(200, {
     description: 'Store model instance',
@@ -111,6 +128,9 @@ export class StoreController {
     return this.storeRepository.findById(id, filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateSeller],
+  })
   @patch('/stores/{id}')
   @response(204, {
     description: 'Store PATCH success',
@@ -129,6 +149,9 @@ export class StoreController {
     await this.storeRepository.updateById(id, store);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateSeller],
+  })
   @put('/stores/{id}')
   @response(204, {
     description: 'Store PUT success',
@@ -140,6 +163,9 @@ export class StoreController {
     await this.storeRepository.replaceById(id, store);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.DeleteSeller],
+  })
   @del('/stores/{id}')
   @response(204, {
     description: 'Store DELETE success',

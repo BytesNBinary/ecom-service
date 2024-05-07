@@ -20,6 +20,8 @@ import {
 import {OrderDetails} from '../models';
 import {OrderDetailsRepository} from '../repositories';
 import { authenticate, STRATEGY } from 'loopback4-authentication';
+import {authorize} from 'loopback4-authorization';
+import {PermissionKeys} from '../enum';
 
 export class OrderDetailsController {
   constructor(
@@ -27,6 +29,9 @@ export class OrderDetailsController {
     public orderDetailsRepository : OrderDetailsRepository,
   ) {}
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.CreateOrderDetails],
+  })
   @post('/order-details')
   @response(200, {
     description: 'OrderDetails model instance',
@@ -48,6 +53,9 @@ export class OrderDetailsController {
     return this.orderDetailsRepository.create(orderDetails);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewOrderDetails],
+  })
   @get('/order-details/count')
   @response(200, {
     description: 'OrderDetails model count',
@@ -59,6 +67,9 @@ export class OrderDetailsController {
     return this.orderDetailsRepository.count(where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewOrderDetails],
+  })
   @get('/order-details')
   @response(200, {
     description: 'Array of OrderDetails model instances',
@@ -77,6 +88,9 @@ export class OrderDetailsController {
     return this.orderDetailsRepository.find(filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateOrderDetails],
+  })
   @patch('/order-details')
   @response(200, {
     description: 'OrderDetails PATCH success count',
@@ -96,6 +110,9 @@ export class OrderDetailsController {
     return this.orderDetailsRepository.updateAll(orderDetails, where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewOrderDetails],
+  })
   @get('/order-details/{id}')
   @response(200, {
     description: 'OrderDetails model instance',
@@ -112,6 +129,9 @@ export class OrderDetailsController {
     return this.orderDetailsRepository.findById(id, filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateOrderDetails],
+  })
   @patch('/order-details/{id}')
   @response(204, {
     description: 'OrderDetails PATCH success',
@@ -130,6 +150,9 @@ export class OrderDetailsController {
     await this.orderDetailsRepository.updateById(id, orderDetails);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateOrderDetails],
+  })
   @put('/order-details/{id}')
   @response(204, {
     description: 'OrderDetails PUT success',
@@ -141,6 +164,9 @@ export class OrderDetailsController {
     await this.orderDetailsRepository.replaceById(id, orderDetails);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.DeleteOrderDetails],
+  })
   @del('/order-details/{id}')
   @response(204, {
     description: 'OrderDetails DELETE success',

@@ -20,6 +20,8 @@ import {
 import {Product} from '../models';
 import {ProductRepository} from '../repositories';
 import { authenticate, STRATEGY } from 'loopback4-authentication';
+import {authorize} from 'loopback4-authorization';
+import {PermissionKeys} from '../enum';
 
 export class ProductController {
   constructor(
@@ -27,6 +29,9 @@ export class ProductController {
     public productRepository : ProductRepository,
   ) {}
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.CreateProduct],
+  })
   @post('/products')
   @response(200, {
     description: 'Product model instance',
@@ -48,6 +53,9 @@ export class ProductController {
     return this.productRepository.create(product);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewProduct],
+  })
   @get('/products/count')
   @response(200, {
     description: 'Product model count',
@@ -59,6 +67,9 @@ export class ProductController {
     return this.productRepository.count(where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewProduct],
+  })
   @get('/products')
   @response(200, {
     description: 'Array of Product model instances',
@@ -77,6 +88,9 @@ export class ProductController {
     return this.productRepository.find(filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @patch('/products')
   @response(200, {
     description: 'Product PATCH success count',
@@ -96,6 +110,9 @@ export class ProductController {
     return this.productRepository.updateAll(product, where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewProduct],
+  })
   @get('/products/{id}')
   @response(200, {
     description: 'Product model instance',
@@ -112,6 +129,9 @@ export class ProductController {
     return this.productRepository.findById(id, filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @patch('/products/{id}')
   @response(204, {
     description: 'Product PATCH success',
@@ -130,6 +150,9 @@ export class ProductController {
     await this.productRepository.updateById(id, product);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @put('/products/{id}')
   @response(204, {
     description: 'Product PUT success',
@@ -141,6 +164,9 @@ export class ProductController {
     await this.productRepository.replaceById(id, product);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.DeleteProduct],
+  })
   @del('/products/{id}')
   @response(204, {
     description: 'Product DELETE success',

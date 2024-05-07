@@ -20,6 +20,8 @@ import {
 import {SubCategory} from '../models';
 import {SubCategoryRepository} from '../repositories';
 import { authenticate, STRATEGY } from 'loopback4-authentication';
+import {authorize} from 'loopback4-authorization';
+import {PermissionKeys} from '../enum';
 
 export class SubCategoryController {
   constructor(
@@ -27,6 +29,9 @@ export class SubCategoryController {
     public subCategoryRepository : SubCategoryRepository,
   ) {}
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.CreateCategory],
+  })
   @post('/sub-categories')
   @response(200, {
     description: 'SubCategory model instance',
@@ -48,6 +53,9 @@ export class SubCategoryController {
     return this.subCategoryRepository.create(subCategory);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewCategory],
+  })
   @get('/sub-categories/count')
   @response(200, {
     description: 'SubCategory model count',
@@ -59,6 +67,9 @@ export class SubCategoryController {
     return this.subCategoryRepository.count(where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewCategory],
+  })
   @get('/sub-categories')
   @response(200, {
     description: 'Array of SubCategory model instances',
@@ -77,6 +88,9 @@ export class SubCategoryController {
     return this.subCategoryRepository.find(filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateCategory],
+  })
   @patch('/sub-categories')
   @response(200, {
     description: 'SubCategory PATCH success count',
@@ -96,6 +110,9 @@ export class SubCategoryController {
     return this.subCategoryRepository.updateAll(subCategory, where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewCategory],
+  })
   @get('/sub-categories/{id}')
   @response(200, {
     description: 'SubCategory model instance',
@@ -112,6 +129,9 @@ export class SubCategoryController {
     return this.subCategoryRepository.findById(id, filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateCategory],
+  })
   @patch('/sub-categories/{id}')
   @response(204, {
     description: 'SubCategory PATCH success',
@@ -130,6 +150,9 @@ export class SubCategoryController {
     await this.subCategoryRepository.updateById(id, subCategory);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateCategory],
+  })
   @put('/sub-categories/{id}')
   @response(204, {
     description: 'SubCategory PUT success',
@@ -141,6 +164,9 @@ export class SubCategoryController {
     await this.subCategoryRepository.replaceById(id, subCategory);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.DeleteCategory],
+  })
   @del('/sub-categories/{id}')
   @response(204, {
     description: 'SubCategory DELETE success',

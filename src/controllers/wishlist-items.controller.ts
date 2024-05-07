@@ -20,6 +20,8 @@ import {
 import {WishlistItems} from '../models';
 import {WishlistItemsRepository} from '../repositories';
 import { authenticate, STRATEGY } from 'loopback4-authentication';
+import {authorize} from 'loopback4-authorization';
+import {PermissionKeys} from '../enum';
 
 export class WishlistItemsController {
   constructor(
@@ -27,6 +29,9 @@ export class WishlistItemsController {
     public wishlistItemsRepository : WishlistItemsRepository,
   ) {}
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.CreateWishlist],
+  })
   @post('/wishlist-items')
   @response(200, {
     description: 'WishlistItems model instance',
@@ -48,6 +53,9 @@ export class WishlistItemsController {
     return this.wishlistItemsRepository.create(wishlistItems);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewWishlist],
+  })
   @get('/wishlist-items/count')
   @response(200, {
     description: 'WishlistItems model count',
@@ -59,6 +67,9 @@ export class WishlistItemsController {
     return this.wishlistItemsRepository.count(where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewWishlist],
+  })
   @get('/wishlist-items')
   @response(200, {
     description: 'Array of WishlistItems model instances',
@@ -77,6 +88,9 @@ export class WishlistItemsController {
     return this.wishlistItemsRepository.find(filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateWishlist],
+  })
   @patch('/wishlist-items')
   @response(200, {
     description: 'WishlistItems PATCH success count',
@@ -96,6 +110,9 @@ export class WishlistItemsController {
     return this.wishlistItemsRepository.updateAll(wishlistItems, where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewWishlist],
+  })
   @get('/wishlist-items/{id}')
   @response(200, {
     description: 'WishlistItems model instance',
@@ -112,6 +129,9 @@ export class WishlistItemsController {
     return this.wishlistItemsRepository.findById(id, filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateWishlist],
+  })
   @patch('/wishlist-items/{id}')
   @response(204, {
     description: 'WishlistItems PATCH success',
@@ -130,6 +150,9 @@ export class WishlistItemsController {
     await this.wishlistItemsRepository.updateById(id, wishlistItems);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateWishlist],
+  })
   @put('/wishlist-items/{id}')
   @response(204, {
     description: 'WishlistItems PUT success',
@@ -141,6 +164,9 @@ export class WishlistItemsController {
     await this.wishlistItemsRepository.replaceById(id, wishlistItems);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.DeleteWishlist],
+  })
   @del('/wishlist-items/{id}')
   @response(204, {
     description: 'WishlistItems DELETE success',

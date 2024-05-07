@@ -20,6 +20,8 @@ import {
 import {Seller} from '../models';
 import { SellerRepository } from '../repositories/seller.repository';
 import {authenticate, STRATEGY} from 'loopback4-authentication';
+import {authorize} from 'loopback4-authorization';
+import {PermissionKeys} from '../enum';
 
 export class SellerController {
   constructor(
@@ -27,6 +29,9 @@ export class SellerController {
     public sellerRepository : SellerRepository,
   ) {}
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.CreateSeller],
+  })
   @post('/sellers')
   @response(200, {
     description: 'Seller model instance',
@@ -48,6 +53,9 @@ export class SellerController {
     return this.sellerRepository.create(seller);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewSeller],
+  })
   @get('/sellers/count')
   @response(200, {
     description: 'Seller model count',
@@ -59,6 +67,9 @@ export class SellerController {
     return this.sellerRepository.count(where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewSeller],
+  })
   @get('/sellers')
   @response(200, {
     description: 'Array of Seller model instances',
@@ -77,6 +88,9 @@ export class SellerController {
     return this.sellerRepository.find(filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateSeller],
+  })
   @patch('/sellers')
   @response(200, {
     description: 'Seller PATCH success count',
@@ -96,6 +110,9 @@ export class SellerController {
     return this.sellerRepository.updateAll(seller, where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewAnySeller],
+  })
   @get('/sellers/{id}')
   @response(200, {
     description: 'Seller model instance',
@@ -112,6 +129,9 @@ export class SellerController {
     return this.sellerRepository.findById(id, filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateSeller],
+  })
   @patch('/sellers/{id}')
   @response(204, {
     description: 'Seller PATCH success',
@@ -130,6 +150,9 @@ export class SellerController {
     await this.sellerRepository.updateById(id, seller);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateSeller],
+  })
   @put('/sellers/{id}')
   @response(204, {
     description: 'Seller PUT success',
@@ -141,6 +164,9 @@ export class SellerController {
     await this.sellerRepository.replaceById(id, seller);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.DeleteSeller],
+  })
   @del('/sellers/{id}')
   @response(204, {
     description: 'Seller DELETE success',

@@ -16,8 +16,8 @@ export class CartItemsRepository extends DefaultUserModifyCrudRepository<
   constructor(
     @inject(`datasources.${EcomDbSourceName}`)
     dataSource: juggler.DataSource,
-    @inject(AuthenticationBindings.CURRENT_USER)
-    private readonly getUser: Getter<IAuthUserWithPermissions>,
+    @inject.getter(AuthenticationBindings.CURRENT_USER, {optional: true})
+    protected readonly getUser: Getter<IAuthUserWithPermissions | undefined>,
   ) {
     super(CartItems, dataSource, getUser);
   }

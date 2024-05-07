@@ -20,6 +20,8 @@ import {
 import {Payment} from '../models';
 import {PaymentRepository} from '../repositories';
 import { authenticate, STRATEGY } from 'loopback4-authentication';
+import {authorize} from 'loopback4-authorization';
+import {PermissionKeys} from '../enum';
 
 export class PaymentController {
   constructor(
@@ -27,6 +29,9 @@ export class PaymentController {
     public paymentRepository : PaymentRepository,
   ) {}
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.CreatePayment],
+  })
   @post('/payments')
   @response(200, {
     description: 'Payment model instance',
@@ -48,6 +53,9 @@ export class PaymentController {
     return this.paymentRepository.create(payment);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewPayment],
+  })
   @get('/payments/count')
   @response(200, {
     description: 'Payment model count',
@@ -59,6 +67,9 @@ export class PaymentController {
     return this.paymentRepository.count(where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewPayment],
+  })
   @get('/payments')
   @response(200, {
     description: 'Array of Payment model instances',
@@ -77,6 +88,9 @@ export class PaymentController {
     return this.paymentRepository.find(filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdatePayment],
+  })
   @patch('/payments')
   @response(200, {
     description: 'Payment PATCH success count',
@@ -96,6 +110,9 @@ export class PaymentController {
     return this.paymentRepository.updateAll(payment, where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewPayment],
+  })
   @get('/payments/{id}')
   @response(200, {
     description: 'Payment model instance',
@@ -112,6 +129,9 @@ export class PaymentController {
     return this.paymentRepository.findById(id, filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdatePayment],
+  })
   @patch('/payments/{id}')
   @response(204, {
     description: 'Payment PATCH success',
@@ -130,6 +150,9 @@ export class PaymentController {
     await this.paymentRepository.updateById(id, payment);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdatePayment],
+  })
   @put('/payments/{id}')
   @response(204, {
     description: 'Payment PUT success',
@@ -141,6 +164,9 @@ export class PaymentController {
     await this.paymentRepository.replaceById(id, payment);
   }
 @authenticate(STRATEGY.BEARER)
+@authorize({
+  permissions: [PermissionKeys.DeletePayment],
+})
   @del('/payments/{id}')
   @response(204, {
     description: 'Payment DELETE success',

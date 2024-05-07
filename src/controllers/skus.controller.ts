@@ -20,6 +20,8 @@ import {
 import {Skus} from '../models';
 import {SkusRepository} from '../repositories';
 import { authenticate, STRATEGY } from 'loopback4-authentication';
+import {authorize} from 'loopback4-authorization';
+import {PermissionKeys} from '../enum';
 
 export class SkusController {
   constructor(
@@ -27,6 +29,9 @@ export class SkusController {
     public skusRepository : SkusRepository,
   ) {}
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.CreateProduct],
+  })
   @post('/skuses')
   @response(200, {
     description: 'Skus model instance',
@@ -48,6 +53,9 @@ export class SkusController {
     return this.skusRepository.create(skus);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewProduct],
+  })
   @get('/skuses/count')
   @response(200, {
     description: 'Skus model count',
@@ -59,6 +67,9 @@ export class SkusController {
     return this.skusRepository.count(where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewProduct],
+  })
   @get('/skuses')
   @response(200, {
     description: 'Array of Skus model instances',
@@ -77,6 +88,9 @@ export class SkusController {
     return this.skusRepository.find(filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @patch('/skuses')
   @response(200, {
     description: 'Skus PATCH success count',
@@ -96,6 +110,9 @@ export class SkusController {
     return this.skusRepository.updateAll(skus, where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewProduct],
+  })
   @get('/skuses/{id}')
   @response(200, {
     description: 'Skus model instance',
@@ -112,6 +129,9 @@ export class SkusController {
     return this.skusRepository.findById(id, filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @patch('/skuses/{id}')
   @response(204, {
     description: 'Skus PATCH success',
@@ -130,6 +150,9 @@ export class SkusController {
     await this.skusRepository.updateById(id, skus);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @put('/skuses/{id}')
   @response(204, {
     description: 'Skus PUT success',
@@ -141,6 +164,9 @@ export class SkusController {
     await this.skusRepository.replaceById(id, skus);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.DeleteProduct],
+  })
   @del('/skuses/{id}')
   @response(204, {
     description: 'Skus DELETE success',

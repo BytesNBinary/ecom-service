@@ -28,10 +28,11 @@ export class CartController {
     @repository(CartRepository)
     public cartRepository : CartRepository,
   ) {}
+
+  @authenticate(STRATEGY.BEARER)
   @authorize({
     permissions: [PermissionKeys.CreateCart],
   })
-  @authenticate(STRATEGY.BEARER)
   @post('/carts')
   @response(200, {
     description: 'Cart model instance',
@@ -52,10 +53,11 @@ export class CartController {
   ): Promise<Cart> {
     return this.cartRepository.create(cart);
   }
+
+  @authenticate(STRATEGY.BEARER)
   @authorize({
     permissions: [PermissionKeys.ViewCart],
   })
-  @authenticate(STRATEGY.BEARER)
   @get('/carts/count')
   @response(200, {
     description: 'Cart model count',
@@ -66,10 +68,11 @@ export class CartController {
   ): Promise<Count> {
     return this.cartRepository.count(where);
   }
+
+  @authenticate(STRATEGY.BEARER)
   @authorize({
     permissions: [PermissionKeys.ViewCart],
   })
-  @authenticate(STRATEGY.BEARER)
   @get('/carts')
   @response(200, {
     description: 'Array of Cart model instances',
@@ -87,10 +90,11 @@ export class CartController {
   ): Promise<Cart[]> {
     return this.cartRepository.find(filter);
   }
+
+  @authenticate(STRATEGY.BEARER)
   @authorize({
     permissions: [PermissionKeys.UpdateCart],
   })
-  @authenticate(STRATEGY.BEARER)
   @patch('/carts')
   @response(200, {
     description: 'Cart PATCH success count',
@@ -109,10 +113,11 @@ export class CartController {
   ): Promise<Count> {
     return this.cartRepository.updateAll(cart, where);
   }
+
+  @authenticate(STRATEGY.BEARER)
   @authorize({
     permissions: [PermissionKeys.ViewCart],
   })
-  @authenticate(STRATEGY.BEARER)
   @get('/carts/{id}')
   @response(200, {
     description: 'Cart model instance',
@@ -128,10 +133,11 @@ export class CartController {
   ): Promise<Cart> {
     return this.cartRepository.findById(id, filter);
   }
+
+  @authenticate(STRATEGY.BEARER)
   @authorize({
     permissions: [PermissionKeys.UpdateCart],
   })
-  @authenticate(STRATEGY.BEARER)
   @patch('/carts/{id}')
   @response(204, {
     description: 'Cart PATCH success',
@@ -149,10 +155,11 @@ export class CartController {
   ): Promise<void> {
     await this.cartRepository.updateById(id, cart);
   }
-  @authorize({
+
+  @authenticate(STRATEGY.BEARER)
+   @authorize({
     permissions: [PermissionKeys.UpdateCart],
   })
-  @authenticate(STRATEGY.BEARER)
   @put('/carts/{id}')
   @response(204, {
     description: 'Cart PUT success',
@@ -163,10 +170,11 @@ export class CartController {
   ): Promise<void> {
     await this.cartRepository.replaceById(id, cart);
   }
+
+  @authenticate(STRATEGY.BEARER)
   @authorize({
     permissions: [PermissionKeys.DeleteCart],
   })
-  @authenticate(STRATEGY.BEARER)
   @del('/carts/{id}')
   @response(204, {
     description: 'Cart DELETE success',

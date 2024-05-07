@@ -20,6 +20,8 @@ import {
 import {OptionValue} from '../models';
 import {OptionValueRepository} from '../repositories';
 import { authenticate, STRATEGY } from 'loopback4-authentication';
+import {authorize} from 'loopback4-authorization';
+import {PermissionKeys} from '../enum';
 
 export class OptionValueController {
   constructor(
@@ -27,6 +29,9 @@ export class OptionValueController {
     public optionValueRepository : OptionValueRepository,
   ) {}
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @post('/option-values')
   @response(200, {
     description: 'OptionValue model instance',
@@ -48,6 +53,9 @@ export class OptionValueController {
     return this.optionValueRepository.create(optionValue);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewProduct],
+  })
   @get('/option-values/count')
   @response(200, {
     description: 'OptionValue model count',
@@ -59,6 +67,9 @@ export class OptionValueController {
     return this.optionValueRepository.count(where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewProduct],
+  })
   @get('/option-values')
   @response(200, {
     description: 'Array of OptionValue model instances',
@@ -77,6 +88,9 @@ export class OptionValueController {
     return this.optionValueRepository.find(filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @patch('/option-values')
   @response(200, {
     description: 'OptionValue PATCH success count',
@@ -96,6 +110,9 @@ export class OptionValueController {
     return this.optionValueRepository.updateAll(optionValue, where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewProduct],
+  })
   @get('/option-values/{id}')
   @response(200, {
     description: 'OptionValue model instance',
@@ -112,6 +129,9 @@ export class OptionValueController {
     return this.optionValueRepository.findById(id, filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @patch('/option-values/{id}')
   @response(204, {
     description: 'OptionValue PATCH success',
@@ -130,6 +150,9 @@ export class OptionValueController {
     await this.optionValueRepository.updateById(id, optionValue);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateProduct],
+  })
   @put('/option-values/{id}')
   @response(204, {
     description: 'OptionValue PUT success',
@@ -141,6 +164,9 @@ export class OptionValueController {
     await this.optionValueRepository.replaceById(id, optionValue);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.DeleteProduct],
+  })
   @del('/option-values/{id}')
   @response(204, {
     description: 'OptionValue DELETE success',

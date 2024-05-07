@@ -20,6 +20,8 @@ import {
 import {ProductReview} from '../models';
 import {ProductReviewRepository} from '../repositories';
 import { authenticate, STRATEGY } from 'loopback4-authentication';
+import {authorize} from 'loopback4-authorization';
+import {PermissionKeys} from '../enum';
 
 export class ProductReviewController {
   constructor(
@@ -27,6 +29,9 @@ export class ProductReviewController {
     public productReviewRepository : ProductReviewRepository,
   ) {}
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.CreateReview],
+  })
   @post('/product-reviews')
   @response(200, {
     description: 'ProductReview model instance',
@@ -48,6 +53,9 @@ export class ProductReviewController {
     return this.productReviewRepository.create(productReview);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewReview],
+  })
   @get('/product-reviews/count')
   @response(200, {
     description: 'ProductReview model count',
@@ -59,6 +67,9 @@ export class ProductReviewController {
     return this.productReviewRepository.count(where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewReview],
+  })
   @get('/product-reviews')
   @response(200, {
     description: 'Array of ProductReview model instances',
@@ -77,6 +88,9 @@ export class ProductReviewController {
     return this.productReviewRepository.find(filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateReview],
+  })
   @patch('/product-reviews')
   @response(200, {
     description: 'ProductReview PATCH success count',
@@ -96,6 +110,9 @@ export class ProductReviewController {
     return this.productReviewRepository.updateAll(productReview, where);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.ViewReview],
+  })
   @get('/product-reviews/{id}')
   @response(200, {
     description: 'ProductReview model instance',
@@ -112,6 +129,9 @@ export class ProductReviewController {
     return this.productReviewRepository.findById(id, filter);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateReview],
+  })
   @patch('/product-reviews/{id}')
   @response(204, {
     description: 'ProductReview PATCH success',
@@ -130,6 +150,9 @@ export class ProductReviewController {
     await this.productReviewRepository.updateById(id, productReview);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.UpdateReview],
+  })
   @put('/product-reviews/{id}')
   @response(204, {
     description: 'ProductReview PUT success',
@@ -141,6 +164,9 @@ export class ProductReviewController {
     await this.productReviewRepository.replaceById(id, productReview);
   }
   @authenticate(STRATEGY.BEARER)
+  @authorize({
+    permissions: [PermissionKeys.DeleteReview],
+  })
   @del('/product-reviews/{id}')
   @response(204, {
     description: 'ProductReview DELETE success',

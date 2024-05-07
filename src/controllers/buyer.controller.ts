@@ -28,10 +28,11 @@ export class BuyerController {
     @repository(BuyerRepository)
     public buyerRepository: BuyerRepository,
   ) {}
+
+  @authenticate(STRATEGY.BEARER)
   @authorize({
     permissions: [PermissionKeys.CreateBuyer],
   })
-  @authenticate(STRATEGY.BEARER)
   @post('/buyers')
   @response(200, {
     description: 'Buyer model instance',
@@ -65,10 +66,11 @@ export class BuyerController {
   async count(@param.where(Buyer) where?: Where<Buyer>): Promise<Count> {
     return this.buyerRepository.count(where);
   }
+
+  @authenticate(STRATEGY.BEARER)
   @authorize({
     permissions: [PermissionKeys.ViewBuyer],
   })
-  @authenticate(STRATEGY.BEARER)
   @get('/buyers')
   @response(200, {
     description: 'Array of Buyer model instances',
@@ -84,10 +86,11 @@ export class BuyerController {
   async find(@param.filter(Buyer) filter?: Filter<Buyer>): Promise<Buyer[]> {
     return this.buyerRepository.find(filter);
   }
+
+  @authenticate(STRATEGY.BEARER)
   @authorize({
     permissions: [PermissionKeys.UpdateBuyer],
   })
-  @authenticate(STRATEGY.BEARER)
   @patch('/buyers')
   @response(200, {
     description: 'Buyer PATCH success count',
@@ -106,10 +109,11 @@ export class BuyerController {
   ): Promise<Count> {
     return this.buyerRepository.updateAll(buyer, where);
   }
+
+  @authenticate(STRATEGY.BEARER)
   @authorize({
     permissions: [PermissionKeys.ViewAnyBuyer],
   })
-  @authenticate(STRATEGY.BEARER)
   @get('/buyers/{id}')
   @response(200, {
     description: 'Buyer model instance',
@@ -126,10 +130,11 @@ export class BuyerController {
   ): Promise<Buyer> {
     return this.buyerRepository.findById(id, filter);
   }
+
+  @authenticate(STRATEGY.BEARER)
   @authorize({
     permissions: [PermissionKeys.UpdateBuyer],
   })
-  @authenticate(STRATEGY.BEARER)
   @patch('/buyers/{id}')
   @response(204, {
     description: 'Buyer PATCH success',
@@ -147,10 +152,11 @@ export class BuyerController {
   ): Promise<void> {
     await this.buyerRepository.updateById(id, buyer);
   }
+
+  @authenticate(STRATEGY.BEARER, {})
   @authorize({
     permissions: [PermissionKeys.UpdateBuyer],
   })
-  @authenticate(STRATEGY.BEARER, {})
   @put('/buyers/{id}')
   @response(204, {
     description: 'Buyer PUT success',
@@ -161,10 +167,11 @@ export class BuyerController {
   ): Promise<void> {
     await this.buyerRepository.replaceById(id, buyer);
   }
+
+  @authenticate(STRATEGY.BEARER)
   @authorize({
     permissions: [PermissionKeys.DeleteBuyer],
   })
-  @authenticate(STRATEGY.BEARER)
   @del('/buyers/{id}')
   @response(204, {
     description: 'Buyer DELETE success',

@@ -1,11 +1,11 @@
 import {Entity, model, property} from '@loopback/repository';
-import {IAuthUser} from 'loopback4-authentication';
-import {UserPermission} from 'loopback4-authorization';
+import {UserPermission, UserPermissionsOverride} from 'loopback4-authorization';
+import {Role} from './role.model';
 
 @model({
   name: 'users',
 })
-export class User extends Entity implements IAuthUser {
+export class User extends Entity implements UserPermissionsOverride<string> {
   @property({
     type: 'number',
     id: true,
@@ -52,6 +52,11 @@ export class User extends Entity implements IAuthUser {
     itemType: 'string',
   })
   permissions: UserPermission<string>[];
+
+  @property({
+    type: 'string',
+  })
+  role: Role;
 
   constructor(data?: Partial<User>) {
     super(data);
